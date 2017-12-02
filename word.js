@@ -9,20 +9,14 @@ function Target(title) {
     this.displayArray = displayArray;
     this.filler = function() {
         for (var i = 0; i < this.length; i++) {
-            if (this.strung[i] != " ") {
+            if (this.strung[i] != "-") {
                 displayArray.push("_");
             }
             else {
                 displayArray.push("  ");
             }
-        }
+        } // End of for
     }; // End of filler function
 } // End of function Target
 
 module.exports = Target;
-/*
-
-
-
-
-*/
