@@ -1,5 +1,6 @@
 // Constructor function for the title to guess
 var displayArray = [];
+var output = [];
 
 function Target(title) {
     this.title = title;
@@ -8,18 +9,20 @@ function Target(title) {
     this.displayArray = displayArray;
     this.filler = function() {
         for (var i = 0; i < this.length; i++) {
-            if (this.strung[i] != "%20") {
-                displayArray.unshift("_ ");
+            if (this.strung[i] != " ") {
+                displayArray.push("_");
             }
             else {
-                displayArray.unshift("  ")
+                displayArray.push("  ");
             }
         }
-    };
-}
+    }; // End of filler function
+} // End of function Target
 
 module.exports = Target;
+/*
 
 
 
-//this.title.splice()
+
+*/

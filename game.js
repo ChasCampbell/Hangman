@@ -15,6 +15,8 @@ var Target = require("./word.js");
 var displayArray;
 var strung;
 var length;
+var preoutput;
+var output;
 var Letter = require("./letter.js")
 var guessesLeft = 0;
 var winCount = 0;
@@ -46,12 +48,18 @@ var targetsArray = [
 // Start of game
 console.log("It's Showtime!" + "\nHere comes a word target - enter letters to see if you can guess it.\nYou get up to nine wrong letters.");
 //Get a target
-Hamilton = new Target("Hamilton");
-Hamilton.filler();
-console.log(Hamilton.title);
-console.log(Hamilton.strung);
-console.log(Hamilton.length);
-console.log(Hamilton.displayArray);
-console.log(Hamilton.displayArray[0]);
+TheWiz = new Target("The Wiz");
+TheWiz.filler();
+preoutput = TheWiz.displayArray.slice(1, (TheWiz.length - 1));
+output = preoutput.join("  ");
+console.log(TheWiz.title);
+console.log(TheWiz.strung);
+console.log(TheWiz.length);
+console.log(TheWiz.displayArray);
+console.log(preoutput);
+console.log(output);
+
+
+
 
 // targetsArray[gameCount]
