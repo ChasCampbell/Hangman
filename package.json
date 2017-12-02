@@ -1,0 +1,22 @@
+{
+  "name": "hangman",
+  "version": "1.0.0",
+  "description": "Command-line version",
+  "main": "game.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChasCampbell/Hangman.git"
+  },
+  "author": "chas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ChasCampbell/Hangman/issues"
+  },
+  "homepage": "https://github.com/ChasCampbell/Hangman#readme",
+  "dependencies": {
+    "inquirer": "^4.0.1"
+  }
+}
