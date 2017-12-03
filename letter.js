@@ -1,10 +1,11 @@
 // Constructor function for the letters in the target title
-function Letters(guessedLetter) {
-    this.letterInWord = letterInWord;
-    this.guessedLetter = guessedLetter;
-    this.checkInWord = function(letter) {
+//var Target = require("./Target");
 
-    }
+function Letters(letterInTitle) {
+    this.letterInTitle = letterInTitle;
+    this.length = target.length;
+    this.title = target.title;
+    this.position = position;
 }
-Letters.prototype.letter2 = "b";
+
 module.exports = Letters;

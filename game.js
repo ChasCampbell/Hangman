@@ -13,10 +13,12 @@ Remember to reset the counters, clear the list of unsuccessful letters.
 // Dependency for inquirer npm package
 var inquirer = require("inquirer");
 var Target = require("./word.js");
-var Letter = require("./letter.js")
+var Letter = require("./letter.js");
+var letterIn;
+var theLetter;
 //var displayArray;
 //var strung;
-//var length;
+var length;
 var preoutput;
 var output;
 var guessesLeft = 9;
@@ -26,8 +28,10 @@ var lossCount = 0;
 var gameCount = 0;
 //var title;
 var target;
-var inTitle = true;
-//var letterCount;
+var inTarget = false;
+var letterInTitle;
+var position;
+var lettersArray = [];
 var targetsArray = [
     "OKLAHOMA",
     "WICKED",
@@ -43,9 +47,11 @@ var targetsArray = [
 
 
 //FUNCTIONS
+
+// Check if the letter is in the target.
+
 // Start of game
 function startGame() {
-
     // Provide a message to the user.
     console.log("It's Showtime!" + "\nHere comes a word target - enter letters to see if you can guess it.\nYou get up to nine wrong letters.");
     //Get a target
@@ -55,49 +61,80 @@ function startGame() {
     target.filler();
     preoutput = target.displayArray.slice(1, (target.length - 1));
     output = preoutput.join("  ");
-    console.log(target.title);
-    console.log(target.strung);
-    console.log(target.length);
-    console.log(target.displayArray);
-    console.log(preoutput);
+    // console.log(target.title);
+    // console.log(target.strung);
+    // console.log(target.length);
+    // console.log(target.numSpaces);
+    // console.log(target.numLetters);
+    // console.log(target.displayArray);
+    // console.log(preoutput);
+
+    // Build an object for each letter in the target
+    for (var j = 0; j < target.output.length; j++) {
+        var wordLetter = new Letter(wordLetter);
+        wordLetter.letterInTitle = target.output(j);
+        console.log(wordLetter.letterInTitle);
+        wordLetter.position = (j);
+        console.log(wordLetter.position);
+        wordLetter.push(lettersArray);
+    } // End of build objects for letters
+
     console.log(output);
-    // Get a guess from the user.
+    console.log("Your target has " + target.numLetters + " letters and " + target.numSpaces + " spaces.");
+    getLetter();
+} // End of startGame 
+
+// Get a guess from the user.
+function getLetter() {
     inquirer.prompt([{
         type: "input",
-        name: "letter",
-        message: "Try a letter."
-    }]).then(function(letter) {
-        console.log(letter);
-        // Check if the letter is in the target.
-        for (var i = 0; i < target.length; i++) {
-            if (letter !== target[i]) {
-                // If not, add 1 to the loss count, add the letter to the wrong list, subtract 1 from the guesses left, and provide a message.
-                inTitle = false;
-                lossCount++
-                letter.push(wrongLetters);
-                guessesLeft--;
-                // Go again?
-
-                if (guessesLeft === 0) {
-                    console.log(letter + " is not in there.\nThat was nine wrong letters = a loss for you.");
-                    console.log("Your standings:\n" + winCount + " Wins\n" + lossCount + " Losses");
-                } // End of if - guesses
-
-            } // End of if - letter not in target
-            else {
-                // If letter is in target, check locations, replace blanks, message - good letter, display no wring, list, new display of target.
-                console.log("Good choice! You have " + guessesLeft + ".\nYou have tried ")
-            } // End of else after if - letter not in target. 
-        } // End of for
+        message: "Try a letter.",
+        name: "letterIn"
+    }]).then(function(inquirerResponse) {
+        theLetter = inquirerResponse.letterIn.toUpperCase();
+        console.log(theLetter);
+        checkInTarget();
     }); // End of .then
-    gameCount++;
-} // End of startGame
+} // End of function getLetter
 
-
-
+function checkInTarget() {
+    for (var i = 0; i < target.length; i++) {
+        // console.log(target.title[i]);
+        if (theLetter == target.title[i]) {
+            inTarget = true;
+            break;
+        } // End of if - letter in target
+    } // End of for - all letters in target checked to see if letter is in target
+    // console.log(inTarget);
+    if (inTarget === false) {
+        guessesLeft--;
+        // If no guesses left, increment game counter and loss counter, display messages, ask = Play Again?
+        if (guessesLeft === 0) {
+            gameCount++;
+            lossCount++;
+            console.log("Sorry, " + theLetter + " is not in there.\nThat was nine wrong letters = a loss for you.");
+            console.log("Your standings:\n" + winCount + " Wins\n" + lossCount + " Losses");
+            // Play again?
+            return;
+        }
+        // If letter not in target but guesses remain, add letterIn to wrongLetters,
+        // display message, display wrongLetters, show the current target status, get another letter.
+        else {
+            wrongLetters.push(theLetter);
+            console.log("Sorry - " + theLetter + " is not in there.\nYou have " + guessesLeft + " wrong tries left.\nWrong tries so far:");
+            console.log(wrongLetters);
+            console.log(output);
+            getLetter();
+        }
+    }
+    else {
+        // inTarget is true, check locations and  replace blanks.
+        // Display a message - good letter, guesses left and display wrong list.
+        console.log("Good choice! You have " + guessesLeft + " wrong tries left.\nYou have tried: ");
+        console.log(wrongLetters);
+        // update the output, and show the line.
+    } // End of else
+} // End of function checkInTarget
 
 //LOGIC
 startGame();
-
-
-//

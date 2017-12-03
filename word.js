@@ -1,6 +1,7 @@
 // Constructor function for the title to guess
 var displayArray = [];
-var output = [];
+var numSpaces = 0;
+var numLetters = 0;
 
 function Target(title) {
     this.title = title;
@@ -14,9 +15,12 @@ function Target(title) {
             }
             else {
                 displayArray.push("  ");
+                numSpaces++;
             }
         } // End of for
     }; // End of filler function
+    this.numSpaces = numSpaces;
+    this.numLetters = (this.length - 2) - this.numSpaces;
 } // End of function Target
 
 module.exports = Target;
