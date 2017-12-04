@@ -1,10 +1,9 @@
 // Constructor function for the letters in the target title
-//var Target = require("./Target");
+var Target = require("./word.js");
+var position;
 
 function Letters(letterInTitle) {
     this.letterInTitle = letterInTitle;
-    this.length = target.length;
-    this.title = target.title;
     this.position = position;
 }
 
