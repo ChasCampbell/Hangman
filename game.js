@@ -31,6 +31,7 @@ var inTarget = false;
 var wordLetter;
 var lettersUsed = [];
 var lettersArray = [];
+var displayArray = [];
 var targetsArray = [
     "THE+WIZ",
     "OKLAHOMA",
@@ -57,14 +58,24 @@ function startGame() {
     var targetTitle = targetsArray[gameCount];
     target = new Target(targetTitle);
     // Make up an output of blanks and spaces matching the target.
-    target.filler();
     tlength = targetTitle.length;
-    preoutput = target.displayArray.slice(1, (tlength - 1));
-    output = preoutput.join("  ");
+    preoutput = target.strung.slice(1, (target.strung.length - 1));
+    console.log(preoutput.length);
+
+    function filler() {
+        for (var i = 0; i < preoutput.length; i++) {
+            if (preoutput[i] != "+") {
+                target.displayArray.push("_");
+            }
+            else {
+                target.displayArray.push(" ");
+            }
+            console.log(target.displayArray[i]);
+        } // End of for
+    } // End of filler function
+    filler();
+    output = target.displayArray.join("  ");
     // Count the spaces to use to check for a succesful outcome later.
-    console.log(target.title.length);
-    console.log(tlength);
-    console.log(target.strung);
     for (var i = 0; i < target.title.length; i++) {
         if (target.title[i] == "+") {
             spacesCount = spacesCount + 1;
