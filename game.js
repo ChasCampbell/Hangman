@@ -17,6 +17,7 @@ var Letter = require("./letter.js");
 var letterInTitle;
 var theLetter;
 var preoutput;
+var strungArray = [];
 var spacesCount = 0;
 var letterCount = 0;
 var output;
@@ -47,6 +48,11 @@ var targetsArray = [
 
 
 //FUNCTIONS
+function clearNewOutput() {
+    for (var f = 0; f < lettersArray.length; f++) {
+        strungArray.push("_");
+    }
+}
 
 // Start of game
 function startGame() {
@@ -55,12 +61,11 @@ function startGame() {
     // Provide a message to the user.
     console.log("It's Showtime!" + "\nHere comes a word target - enter letters to see if you can guess it.\nYou get up to nine wrong letters.");
     //Get a target
-    var targetTitle = targetsArray[gameCount];
+    var targetTitle = targetsArray[gameCount]; //
     target = new Target(targetTitle);
     // Make up an output of blanks and spaces matching the target.
     tlength = targetTitle.length;
     preoutput = target.strung.slice(1, (target.strung.length - 1));
-    console.log(preoutput.length);
 
     function filler() {
         for (var i = 0; i < preoutput.length; i++) {
@@ -70,7 +75,6 @@ function startGame() {
             else {
                 target.displayArray.push(" ");
             }
-            console.log(target.displayArray[i]);
         } // End of for
     } // End of filler function
     filler();
@@ -88,11 +92,12 @@ function startGame() {
     for (var j = 1; j < target.strung.length - 1; j++) {
         wordLetter = new Letter(letterInTitle);
         wordLetter.letterInTitle = target.strung[j];
-        // console.log(wordLetter.letterInTitle);
         wordLetter.position = (j - 1);
-        // console.log(wordLetter.position);
-        lettersArray.push(wordLetter);
+        lettersArray.push(wordLetter.letterInTitle);
     } // End of build objects for letters
+    // Provide an array for the output when letters are found.
+    // Make it a function to use for resetting.
+    clearNewOutput();
     console.log(output);
     console.log("Your target has " + (letterCount) + " letters and " + spacesCount + " spaces.");
     getLetter();
@@ -128,6 +133,9 @@ function checkInTarget() {
             lossCount++;
             guessesLeft = 9;
             lettersUsed = [];
+            clearNewOutput();
+            lettersArray.length = 0;
+            strungArray.length = 0;
             console.log("Sorry, " + theLetter + " is not in there.\nThat was nine wrong letters - a loss for you.");
             console.log("Your standings:\n" + winCount + " Wins\n" + lossCount + " Losses");
             startGame();
@@ -146,35 +154,44 @@ function checkInTarget() {
         // inTarget is true, check locations and  replace blanks.
         // Reset inTarget to false for next letter test.
         inTarget = false;
-        // console.log(lettersArray.length);
         for (var k = 0; k < lettersArray.length; k++) {
-            if (theLetter == target.title[k]) {
-                preoutput.splice(k, 1, theLetter);
-                output = preoutput.join("  ");
+            if (lettersArray[k] === "+") {
+                strungArray.splice(k, 1, (" "));
+            }
+        }
+        for (var k = 0; k < lettersArray.length; k++) {
+            if (lettersArray[k] === theLetter) {
+                strungArray.splice(k, 1, (theLetter));
                 // Increment the count of matched letters
                 matches++;
             } // End of if
         } // End of for
-        if (matches === tlength - 1) {
-            // Increment the win count and game count.
-            winCount++;
-            gameCount++;
-            // Reset lettersUsed and guessesLeft.
-            lettersUsed = [];
-            guessesLeft = 9;
-            // Display a message - you won, wins and losses.
-            console.log("YOU GOT IT! That is a win for you!");
-            console.log("Your standings:\n" + winCount + " Wins\n" + lossCount + " Losses");
-            startGame();
-        } // End of if target matched true
-        else {
-            // Display message with stats and guesses left
-            console.log("Good one! " + theLetter + " is in there.\nYou have " + guessesLeft + " wrong tries left.\nLetters used so far:");
-            console.log(lettersUsed);
-            console.log(output);
-            getLetter();
-        }
-    } // End of else
+    } // End of else after handling possible false.
+    // var newOutput = JSON.stringify(preoutArray);
+    var newOutput = strungArray.join("  ");
+    if (matches === tlength - 1) {
+        // Increment the win count and game count.
+        winCount++;
+        gameCount++;
+        // Reset lettersUsed and guessesLeft.
+        lettersUsed = [];
+        guessesLeft = 9;
+        clearNewOutput();
+        lettersArray.length = 0;
+        strungArray.length = 0;
+        // Display a message - you won, wins and losses.
+        console.log("YOU GOT IT! That is a win for you!");
+        console.log("Your standings:\n" + winCount + " Wins\n" + lossCount + " Losses");
+        startGame();
+    } // End of if target matched true
+    else {
+        // Display message with stats and guesses left
+        console.log("Good one! " + theLetter + " is in there.\nYou have " + guessesLeft + " wrong tries left.\nLetters used so far:");
+        console.log(lettersUsed);
+        console.log(newOutput);
+        getLetter();
+    }
+
 } // End of function checkInTarget
 
 //LOGIC
